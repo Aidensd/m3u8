@@ -6,8 +6,9 @@ import subprocess
 import shlex
 import logging
 import os
+import time
 
-TOKEN = "6630536607:AAHq8fS9wHqDoj-wNn5uNsoaNS2B2Un2ub0"
+TOKEN = os.getenv("6630536607:AAHq8fS9wHqDoj-wNn5uNsoaNS2B2Un2ub0")
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -37,10 +38,6 @@ def help_command(update: Update, context: CallbackContext) -> None:
     """
     update.message.reply_text(help_text)
 
-def convert(update: Update, context: CallbackContext) -> None:
-    """Convert a video."""
-    # ... existing code ...
-
 def handle_file(update: Update, context: CallbackContext) -> None:
     """Handle file messages."""
     file = update.message.document
@@ -51,12 +48,13 @@ def handle_file(update: Update, context: CallbackContext) -> None:
 
     input_file_name = file.file_id
     file.download(input_file_name)
+    output_file_name = f"{input_file_name}-{int(time.time())}.mkv"
+    command = f'ffmpeg -i {input_file_name} -c:v libx265 -crf 25 -preset medium -c:a copy {output_file_name}'
 
-    command = f'ffmpeg -i {input_file_name} -c:v libx265 -crf 25 -preset medium -c:a copy output.mkv'
     try:
         subprocess.run(command, shell=True, check=True)
-        update.message.reply_text('output.mkv created successfully.')
-        with open('output.mkv', 'rb') as video:
+        update.message.reply_text(f'{output_file_name} created successfully.')
+        with open(output_file_name, 'rb') as video:
             context.bot.send_video(chat_id=update.effective_chat.id, video=video)
     except subprocess.CalledProcessError as e:
         logger.error(f'Error occurred: {str(e)}')
@@ -64,8 +62,8 @@ def handle_file(update: Update, context: CallbackContext) -> None:
     finally:
         if os.path.exists(input_file_name):
             os.remove(input_file_name)
-        if os.path.exists('output.mkv'):
-            os.remove('output.mkv')
+        if os.path.exists(output_file_name):
+            os.remove(output_file_name)
 
 def error_handler(update: Update, context: CallbackContext) -> None:
     """Log the error and send a telegram message to notify the developer."""
@@ -79,7 +77,6 @@ def main() -> None:
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(CommandHandler("convert", convert))
     dispatcher.add_handler(MessageHandler(Filters.document.mime_type("video/*"), handle_file))
 
     dispatcher.add_error_handler(error_handler)
