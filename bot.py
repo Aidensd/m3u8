@@ -3,7 +3,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 
 import subprocess
 
-TOKEN = "6386389667:AAHMFT1fBLhs27LI1f5c-YgjXRmMvLBFbm8"
+TOKEN = "6386389667:AAHnRESKkPsZVyDB4LeayhXcDt9DdVIPVUo"
 
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
