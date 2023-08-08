@@ -1,1 +1,17 @@
 ffmpeg
+pyrogram
+tgcrypto
+py-tgcalls
+python-dotenv
+yt-dlp
+youtube-search-python
+requests
+aiohttp
+aiofiles
+asyncio
+youtube-search
+pillow
+future
+psutil
+wget
+tswift
