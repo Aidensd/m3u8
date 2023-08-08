@@ -1,13 +1,26 @@
-FROM python:3.9
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim-buster
 
-RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
-
+# Set the working directory in the container to /app
 WORKDIR /app
 
-COPY . .
+# Add the current directory contents into the container at /app
+ADD . /app
 
-RUN pip install -r requirements.txt
+# Update package lists
+RUN apt-get update
 
-CMD ["python", "bot.py"]
+# Install ffmpeg
+RUN apt-get install -y ffmpeg
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Define environment variable
+ENV NAME World
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
