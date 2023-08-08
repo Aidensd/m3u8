@@ -5,7 +5,7 @@ FROM python:3.9
 RUN apt-get update && \
     apt-get install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*
-
+    ffmpeg -version
 # Set the working directory in the container to /app
 WORKDIR /app
 
