@@ -8,7 +8,7 @@ import logging
 import os
 import time
 
-TOKEN = os.getenv("6630536607:AAHq8fS9wHqDoj-wNn5uNsoaNS2B2Un2ub0")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
