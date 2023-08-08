@@ -7,7 +7,7 @@ import shlex
 import logging
 import os
 
-TOKEN = "your-token-here"
+TOKEN = "6630536607:AAHq8fS9wHqDoj-wNn5uNsoaNS2B2Un2ub0"
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
